@@ -5,6 +5,10 @@ const { PRESET_DURATIONS } = require("./durations");
 const { getDraggedWindowPosition } = require("./windowDrag");
 const { getWindowVisibilityMenuItem } = require("./windowVisibility");
 const { resizeBoundsAroundCenter } = require("./alertWindow");
+const {
+  getMainWindowCloseAction,
+  getWindowsTrayClickAction
+} = require("./windowLifecycle");
 
 const NORMAL_WINDOW_SIZE = 112;
 const ALERT_WINDOW_SIZE = NORMAL_WINDOW_SIZE * 3;
@@ -18,6 +22,7 @@ let blinkVisible = true;
 let blinkTimer;
 let trayClickTimer;
 let windowDrag;
+let isQuitting = false;
 
 function sendCommand(command, value) {
   if (mainWindow && !mainWindow.isDestroyed()) {
@@ -195,6 +200,13 @@ function createWindow() {
     mainWindow.show();
     mainWindow.focus();
   });
+  mainWindow.on("close", (event) => {
+    if (getMainWindowCloseAction(process.platform, isQuitting) !== "hide") {
+      return;
+    }
+    event.preventDefault();
+    toggleMainWindowVisibility("hide");
+  });
 
   ipcMain.on("show-context-menu", () => {
     buildContextMenu().popup({ window: mainWindow });
@@ -216,6 +228,19 @@ function createTray() {
     tray.setContextMenu(buildContextMenu());
   }
   tray.on("click", () => {
+    if (process.platform === "win32") {
+      const action = getWindowsTrayClickAction(
+        Boolean(mainWindow && !mainWindow.isDestroyed() && mainWindow.isVisible()),
+        latestTimerState.status
+      );
+      if (action === "show") {
+        toggleMainWindowVisibility("show");
+      } else {
+        sendCommand(action);
+      }
+      return;
+    }
+
     if (latestTimerState.status === "finished") {
       sendCommand("finish-click");
       return;
@@ -290,6 +315,10 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+app.on("before-quit", () => {
+  isQuitting = true;
 });
 
 app.on("window-all-closed", () => {

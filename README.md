@@ -26,6 +26,8 @@ https://github.com/sange1022/andian-landian/releases
 - 状态栏右键打开菜单。
 - 桌面圆点右键打开菜单。
 - 右键菜单可隐藏桌面蓝点；隐藏后倒计时继续，可从状态栏右键恢复。
+- Windows 上关闭主窗口会隐藏到右下角系统托盘，倒计时继续；单击托盘图标可恢复。
+- 需要完全退出时，使用右键菜单中的 `Quit`。
 - 设置里有 `5 / 25 / 45` 分钟快捷按钮。
 - 设置里也可以输入自定义时间，范围是 `1-180` 分钟。
 - 开始计时后，蓝点会变成半透明。
@@ -36,7 +38,7 @@ https://github.com/sange1022/andian-landian/releases
 
 - 当前 release 是 `arm64`，适合 M 系列 Mac。
 - 当前版本未做 Apple Developer ID 签名，所以第一次打开可能需要手动允许。
-- Windows 版本源码配置仍保留，但当前 GitHub release 只上传了 macOS 安装包。
+- GitHub release 提供 Windows 10 x64 和 Mac ARM64 安装包。
 
 ## Development
 

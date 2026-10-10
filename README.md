@@ -1,5 +1,13 @@
 # 暗淡蓝点
 
+## Windows 原生轻量版
+
+Windows 10 / 11 x64 新增 C++ 原生版，主程序和安装包均为 KB 级，
+无需浏览器内核或 .NET。保留双击计时、拖动、托盘、自定义时间和到点提醒。
+详细构建与使用见 [native-win/README.md](native-win/README.md)。
+安装包为 `dist/native-win/DimBlueDot-1.1.0-Win10-x64-Setup.exe`。
+轻量版与旧版独立安装；确认轻量版可用后卸载旧版，可以释放旧运行时占用的空间。
+
 暗淡蓝点是一个极简桌面番茄钟，当前发布版支持 macOS Apple Silicon。
 
 ## 下载

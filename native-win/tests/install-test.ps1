@@ -1,0 +1,44 @@
+$ErrorActionPreference = 'Stop'
+$output = Resolve-Path "$PSScriptRoot/../../dist/native-win"
+$target = Join-Path $env:TEMP 'DimBlueDot-install-test'
+$setup = Join-Path $output 'DimBlueDot-1.1.0-Win10-x64-Setup.exe'
+$installed = Start-Process $setup -ArgumentList @('/S', "/D=$target") -Wait -PassThru
+if ($installed.ExitCode -ne 0) { throw 'Silent installation failed' }
+foreach ($file in @('DimBlueDot.exe', 'Uninstall.exe', '使用说明.txt')) {
+  if (!(Test-Path (Join-Path $target $file))) { throw "Missing installed file: $file" }
+}
+$installedBytes = (Get-ChildItem $target -Recurse -File | Measure-Object Length -Sum).Sum
+if ($installedBytes -gt 5MB) { throw "Installed directory too big: $installedBytes" }
+Write-Output "Installed directory: $installedBytes bytes"
+
+Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public class NativeTest {
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern IntPtr FindWindow(string c, string t);
+  [DllImport("user32.dll")] public static extern IntPtr SendMessage(IntPtr w, uint m, IntPtr p, IntPtr l);
+}
+'@
+$process = Start-Process (Join-Path $target 'DimBlueDot.exe') -PassThru
+try {
+  $until = [DateTime]::UtcNow.AddSeconds(10)
+  $window = [IntPtr]::Zero
+  while ([DateTime]::UtcNow -lt $until -and $window -eq [IntPtr]::Zero) {
+    Start-Sleep -Milliseconds 100
+    $window = [NativeTest]::FindWindow('DimBlueDotNative', $null)
+  }
+  if ($window -eq [IntPtr]::Zero) { throw 'Installed application did not launch' }
+  [void][NativeTest]::SendMessage($window, 0x10, [IntPtr]::Zero, [IntPtr]::Zero)
+  Start-Sleep -Milliseconds 200
+  $process.Refresh()
+  if ($process.HasExited) { throw 'Close exited rather than hid to tray' }
+  [void][NativeTest]::SendMessage($window, 0x111, [IntPtr]303, [IntPtr]::Zero)
+  if (!$process.WaitForExit(5000)) { throw 'Explicit Quit did not exit' }
+} finally {
+  $process.Refresh()
+  if (!$process.HasExited) { Stop-Process -Id $process.Id }
+}
+$uninstalled = Start-Process (Join-Path $target 'Uninstall.exe') -ArgumentList @('/S', '_?=' + $target) -Wait -PassThru
+if ($uninstalled.ExitCode -ne 0 -or (Test-Path (Join-Path $target 'DimBlueDot.exe'))) { throw 'Uninstall failed' }
+if (Test-Path $target) { Remove-Item $target -Recurse -Force }
+Write-Output 'PASS: install, launch installed app, close-to-tray, quit, and uninstall'

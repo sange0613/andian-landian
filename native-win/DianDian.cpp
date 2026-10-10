@@ -120,9 +120,9 @@ void DrawDot(float diameter) {
         swprintf(text, 16, L"%u", static_cast<unsigned>(minute));
         graphics.DrawString(text, -1, &font, RectF(0, 0, static_cast<REAL>(size), static_cast<REAL>(size)), &format, &white);
         if (gTimer.status == dimblue::Status::Finished) {
-            Font small(L"Segoe UI", static_cast<REAL>(Scale(11)), FontStyleRegular, UnitPixel);
+            Font smallFont(L"Segoe UI", static_cast<REAL>(Scale(11)), FontStyleRegular, UnitPixel);
             swprintf(text, 16, L"%d/3", gTimer.dismissClicks);
-            graphics.DrawString(text, -1, &small, RectF(0, static_cast<REAL>(Scale(18)), static_cast<REAL>(size), static_cast<REAL>(size)), &format, &white);
+            graphics.DrawString(text, -1, &smallFont, RectF(0, static_cast<REAL>(Scale(18)), static_cast<REAL>(size), static_cast<REAL>(size)), &format, &white);
         }
     }
     BITMAPINFO info{};

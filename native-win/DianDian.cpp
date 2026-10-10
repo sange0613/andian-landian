@@ -214,8 +214,9 @@ void OnFinished() {
 }
 
 void ToggleTimer() {
-    if (gTimer.tick(Now())) OnFinished();
-    gTimer.toggle(Now());
+    const auto now = Now();
+    if (gTimer.tick(now)) OnFinished();
+    gTimer.toggle(now);
     Refresh(true);
 }
 

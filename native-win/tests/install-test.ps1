@@ -41,4 +41,10 @@ try {
 $uninstalled = Start-Process (Join-Path $target 'Uninstall.exe') -ArgumentList @('/S', '_?=' + $target) -Wait -PassThru
 if ($uninstalled.ExitCode -ne 0 -or (Test-Path (Join-Path $target 'DimBlueDot.exe'))) { throw 'Uninstall failed' }
 if (Test-Path $target) { Remove-Item $target -Recurse -Force }
+$reportPath = Join-Path $output 'build-report.json'
+$report = Get-Content $reportPath -Raw | ConvertFrom-Json
+$report | Add-Member -NotePropertyName installedBytes -NotePropertyValue $installedBytes
+$report | Add-Member -NotePropertyName validationOS -NotePropertyValue ([Environment]::OSVersion.VersionString)
+$report | Add-Member -NotePropertyName validation -NotePropertyValue 'Native logic, Win32 window messages, installation, installed launch, close-to-tray, quit, uninstall: PASS'
+$report | ConvertTo-Json -Depth 10 | Set-Content $reportPath -Encoding utf8
 Write-Output 'PASS: install, launch installed app, close-to-tray, quit, and uninstall'

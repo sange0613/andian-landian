@@ -51,8 +51,8 @@ FunctionEnd
 Section "Install"
   !insertmacro CloseNativeApp
   SetOutPath "$INSTDIR"
-  File "dist/native-win/DimBlueDot.exe"
-  File /oname=使用说明.txt "native-win/使用说明.txt"
+  File "dist\native-win\DimBlueDot.exe"
+  File /oname=使用说明.txt "native-win\使用说明.txt"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   CreateDirectory "$SMPROGRAMS\暗淡蓝点 (Native)"
   CreateShortcut "$SMPROGRAMS\暗淡蓝点 (Native)\暗淡蓝点.lnk" "$INSTDIR\DimBlueDot.exe"

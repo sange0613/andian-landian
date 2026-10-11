@@ -30,6 +30,13 @@ Windows 上安装 Visual Studio C++ 工具、Node.js、NSIS，在 Developer Powe
 本地 MinGW 首轮实测：主程序 91,136 字节，安装包 114,233 字节。
 最终产物的准确数值以构建报告为准。MSVC 产物大小可能不同。
 
+已完成 Windows 验证的交付版：安装包 160,964 字节（约 157KB），
+程序 198,656 字节（约 194KB），安装目录包含卸载程序共 271,516 字节（约 265KB）。
+对应 Windows 构建与验证：[run 38097249105](https://github.com/sange1022/andian-landian/actions/runs/38097249105)。
+这份验证后的安装包与免安装程序在 `dist/暗淡蓝点-Win10-轻量版/`，
+附有 `build-report.json` 大小及校验报告。验证平台是 Windows NT 10.0.26100.0，
+尚未在 Windows 10 真机验证。
+
 ## 验证
 
 `tests/logic_test.cpp` 可在 Mac / Windows 编译运行，覆盖计时截止时间、

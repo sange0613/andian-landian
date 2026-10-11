@@ -26,11 +26,38 @@ Windows CI builds with MSVC and tests actual window messages and installation.
 
 ## Implementation
 
-- [ ] Add failing portable timer/input tests, then implement the state model.
-- [ ] Complete the native window, tray, settings, and reminder behavior.
-- [ ] Build the Windows executable and compressed installer; check imports and size.
-- [ ] Review the code, run portable tests and available runtime checks, and document
+- [x] Add failing portable timer/input tests, then implement the state model.
+- [x] Complete the native window, tray, settings, and reminder behavior.
+- [x] Build the Windows executable and compressed installer; check imports and size.
+- [x] Review the code, run portable tests and available runtime checks, and document
       remaining Windows 10 validation limits with concrete download links.
+
+## Evidence So Far
+
+Portable C++ tests pass, including address/undefined-behavior sanitizer checks.
+Local MinGW executable: 91,136 bytes. NSIS package: 114,246 bytes after the
+Windows SDK macro fix. PE imports contain Windows system libraries only;
+7-Zip archive verification passed. Independent source/installer review found no
+important issues. Windows CI is running real window and installation tests.
+The first MSVC build found an SDK `small` macro collision in a font variable;
+renaming it to `smallFont` addresses the diagnosed compile error.
+
+## Final Verification
+
+Windows run 38097249105 at commit ff44c3e passed all build, portable logic,
+real Win32 window/settings messages, install, installed launch, close-to-tray,
+explicit quit, and uninstall checks. The PowerShell smoke test was corrected
+to pass an actual C# null title to FindWindow, and to pass the uninstaller
+arguments as one string. Temporary product startup logging was removed.
+
+Verified Windows/MSVC delivery: executable 198,656 bytes, installer 160,964
+bytes, complete installed directory 271,516 bytes. Only user32, gdi32,
+shell32, gdiplus, advapi32, and kernel32 are imported. Artifacts and their
+SHA-256 report were downloaded to dist/暗淡蓝点-Win10-轻量版/.
+The validation OS is Windows NT 10.0.26100.0, not a Windows 10 physical
+machine; physical Windows 10 verification remains a user trial.
+The independent review found no important product issues. The implementation
+is retained on codex/native-windows-small; no Release was created.
 
 ## Review Focus
 

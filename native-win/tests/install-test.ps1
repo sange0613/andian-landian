@@ -19,7 +19,9 @@ public class NativeTest {
   [DllImport("user32.dll")] public static extern IntPtr SendMessage(IntPtr w, uint m, IntPtr p, IntPtr l);
 }
 '@
-$process = Start-Process (Join-Path $target 'DimBlueDot.exe') -PassThru
+$stdout = Join-Path $env:TEMP 'DimBlueDot-startup.txt'
+$stderr = Join-Path $env:TEMP 'DimBlueDot-startup-errors.txt'
+$process = Start-Process (Join-Path $target 'DimBlueDot.exe') -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
 try {
   $until = [DateTime]::UtcNow.AddSeconds(10)
   $window = [IntPtr]::Zero
@@ -30,8 +32,10 @@ try {
   if ($window -eq [IntPtr]::Zero) {
     $process.Refresh()
     Write-Output "Launch diagnostics: HasExited=$($process.HasExited), ExitCode=$($process.ExitCode), Path=$target"
-    Get-ChildItem $target | Select-Object Name, Length
-    Get-Process DimBlueDot -ErrorAction SilentlyContinue | Select-Object Id, MainWindowHandle, MainWindowTitle, Responding
+    Get-Content $stdout, $stderr -ErrorAction SilentlyContinue | Write-Output
+    Get-ChildItem $target | Select-Object Name, Length | ConvertTo-Json -Compress | Write-Output
+    Get-Process DimBlueDot -ErrorAction SilentlyContinue | Select-Object Id, SessionId, MainWindowHandle, MainWindowTitle, Responding | ConvertTo-Json -Compress | Write-Output
+    Get-Process -Id $PID | Select-Object Id, SessionId | ConvertTo-Json -Compress | Write-Output
     throw 'Installed application did not launch'
   }
   [void][NativeTest]::SendMessage($window, 0x10, [IntPtr]::Zero, [IntPtr]::Zero)

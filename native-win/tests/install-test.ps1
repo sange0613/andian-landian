@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 public class NativeTest {
   [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern IntPtr FindWindow(string c, string t);
   [DllImport("user32.dll")] public static extern IntPtr SendMessage(IntPtr w, uint m, IntPtr p, IntPtr l);
+  public static IntPtr FindTimer() { return FindWindow("DimBlueDotNative", null); }
 }
 '@
 $stdout = Join-Path $env:TEMP 'DimBlueDot-startup.txt'
@@ -27,7 +28,7 @@ try {
   $window = [IntPtr]::Zero
   while ([DateTime]::UtcNow -lt $until -and $window -eq [IntPtr]::Zero) {
     Start-Sleep -Milliseconds 100
-    $window = [NativeTest]::FindWindow('DimBlueDotNative', $null)
+    $window = [NativeTest]::FindTimer()
   }
   if ($window -eq [IntPtr]::Zero) {
     $process.Refresh()

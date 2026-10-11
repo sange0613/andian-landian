@@ -46,13 +46,6 @@ void Refresh(bool force = false);
 int Scale(int value) { return MulDiv(value, gDpi, 96); }
 std::uint64_t Now() { return GetTickCount64(); }
 
-void StartupTrace(const char* message) {
-    HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (!output || output == INVALID_HANDLE_VALUE) return;
-    DWORD written = 0;
-    WriteFile(output, message, static_cast<DWORD>(lstrlenA(message)), &written, nullptr);
-}
-
 const wchar_t* StatusText() {
     switch (gTimer.status) {
         case Status::Running: return L"Running";
@@ -431,7 +424,6 @@ LRESULT CALLBACK WindowProc(HWND window, UINT message, WPARAM wParam, LPARAM lPa
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
     gInstance = instance;
-    StartupTrace("startup: entry\r\n");
     HANDLE mutex = CreateMutexW(nullptr, FALSE, L"Local\\DimBlueDotNativeInstance");
     if (!mutex) return 1;
     if (GetLastError() == ERROR_ALREADY_EXISTS) {
@@ -439,17 +431,14 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
         CloseHandle(mutex);
         return 0;
     }
-    StartupTrace("startup: single instance\r\n");
     SetProcessDPIAware();
     HDC screen = GetDC(nullptr);
     gDpi = GetDeviceCaps(screen, LOGPIXELSX);
     ReleaseDC(nullptr, screen);
     LoadPreferences();
-    StartupTrace("startup: preferences\r\n");
     Gdiplus::GdiplusStartupInput startup;
     ULONG_PTR token = 0;
     if (Gdiplus::GdiplusStartup(&token, &startup, nullptr) != Gdiplus::Ok) { CloseHandle(mutex); return 1; }
-    StartupTrace("startup: GDI+\r\n");
     gIcon = static_cast<HICON>(LoadImageW(instance, MAKEINTRESOURCEW(IDI_APP), IMAGE_ICON, 16, 16, LR_SHARED));
     gTaskbarCreated = RegisterWindowMessageW(L"TaskbarCreated");
     WNDCLASSEXW wc{};
@@ -462,19 +451,15 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int) {
     wc.style = CS_DBLCLKS;
     int result = 1;
     if (RegisterClassExW(&wc)) {
-        StartupTrace("startup: registered class\r\n");
         KeepOnScreen(Scale(kDotSize));
         gWindow = CreateWindowExW(WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
                                   kClass, kTitle, WS_POPUP, gCenter.x - Scale(kDotSize) / 2,
                                   gCenter.y - Scale(kDotSize) / 2, Scale(kDotSize), Scale(kDotSize),
                                   nullptr, nullptr, instance, nullptr);
         if (gWindow) {
-            StartupTrace("startup: created window\r\n");
             AddTray();
-            StartupTrace("startup: tray\r\n");
             Refresh(true);
             ShowWindow(gWindow, SW_SHOWNOACTIVATE);
-            StartupTrace("startup: shown\r\n");
             SetTimer(gWindow, kTick, 1000, nullptr);
             MSG message{};
             BOOL fetched;

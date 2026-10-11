@@ -49,8 +49,12 @@ try {
   $process.Refresh()
   if (!$process.HasExited) { Stop-Process -Id $process.Id }
 }
-$uninstalled = Start-Process (Join-Path $target 'Uninstall.exe') -ArgumentList @('/S', '_?=' + $target) -Wait -PassThru
-if ($uninstalled.ExitCode -ne 0 -or (Test-Path (Join-Path $target 'DimBlueDot.exe'))) { throw 'Uninstall failed' }
+$uninstalled = Start-Process (Join-Path $target 'Uninstall.exe') -ArgumentList "/S _?=$target" -Wait -PassThru
+if ($uninstalled.ExitCode -ne 0 -or (Test-Path (Join-Path $target 'DimBlueDot.exe'))) {
+  Write-Output "Uninstall diagnostics: ExitCode=$($uninstalled.ExitCode), Target=$target"
+  Get-ChildItem $target | Select-Object Name, Length | ConvertTo-Json -Compress | Write-Output
+  throw 'Uninstall failed'
+}
 if (Test-Path $target) { Remove-Item $target -Recurse -Force }
 $reportPath = Join-Path $output 'build-report.json'
 $report = Get-Content $reportPath -Raw | ConvertFrom-Json

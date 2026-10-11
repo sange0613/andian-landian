@@ -27,7 +27,13 @@ try {
     Start-Sleep -Milliseconds 100
     $window = [NativeTest]::FindWindow('DimBlueDotNative', $null)
   }
-  if ($window -eq [IntPtr]::Zero) { throw 'Installed application did not launch' }
+  if ($window -eq [IntPtr]::Zero) {
+    $process.Refresh()
+    Write-Output "Launch diagnostics: HasExited=$($process.HasExited), ExitCode=$($process.ExitCode), Path=$target"
+    Get-ChildItem $target | Select-Object Name, Length
+    Get-Process DimBlueDot -ErrorAction SilentlyContinue | Select-Object Id, MainWindowHandle, MainWindowTitle, Responding
+    throw 'Installed application did not launch'
+  }
   [void][NativeTest]::SendMessage($window, 0x10, [IntPtr]::Zero, [IntPtr]::Zero)
   Start-Sleep -Milliseconds 200
   $process.Refresh()

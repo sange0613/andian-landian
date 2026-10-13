@@ -3,7 +3,7 @@ const path = require("node:path");
 const crypto = require("node:crypto");
 const output = path.resolve(__dirname, "../dist/native-win");
 const app = path.join(output, "DimBlueDot.exe");
-const installer = path.join(output, "DimBlueDot-1.1.0-Win10-x64-Setup.exe");
+const installer = path.join(output, "DimBlueDot-1.1.1-Win10-x64-Setup.exe");
 const limits = [[app, 5 * 1024 * 1024], [installer, 2 * 1024 * 1024]];
 const data = fs.readFileSync(app);
 if (data.readUInt16LE(0) !== 0x5a4d) throw new Error("Not a Windows executable");
@@ -38,6 +38,6 @@ const artifacts = limits.map(([file, limit]) => {
   if (bytes > limit) throw new Error(`${file} exceeds size limit`);
   return { file: path.basename(file), bytes, sha256: crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex") };
 });
-const report = { version: "1.1.0", platform: "Windows 10 x64", imports, artifacts };
+const report = { version: "1.1.1", language: "zh-CN", author: "戌無营造", platform: "Windows 10 x64", imports, artifacts };
 fs.writeFileSync(path.join(output, "build-report.json"), JSON.stringify(report, null, 2) + "\n");
 console.log(JSON.stringify(report, null, 2));

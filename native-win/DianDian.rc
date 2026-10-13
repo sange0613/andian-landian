@@ -8,43 +8,43 @@ IDI_APP ICON "dist/native-win/icon-small.ico"
 IDD_SETTINGS DIALOGEX 0, 0, 206, 170
 STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "暗淡蓝点"
-FONT 9, "Segoe UI"
+CAPTION "暗淡蓝点设置"
+FONT 9, "Microsoft YaHei UI"
 BEGIN
     LTEXT "", IDC_STATUS, 12, 12, 182, 14
-    CONTROL "5 min", IDC_PRESET5, "Button", BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_TABSTOP | WS_GROUP, 12, 34, 54, 20
-    CONTROL "25 min", IDC_PRESET25, "Button", BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_TABSTOP, 76, 34, 54, 20
-    CONTROL "45 min", IDC_PRESET45, "Button", BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_TABSTOP, 140, 34, 54, 20
-    LTEXT "Minutes", -1, 12, 68, 42, 10
+    CONTROL "5 分钟", IDC_PRESET5, "Button", BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_TABSTOP | WS_GROUP, 12, 34, 54, 20
+    CONTROL "25 分钟", IDC_PRESET25, "Button", BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_TABSTOP, 76, 34, 54, 20
+    CONTROL "45 分钟", IDC_PRESET45, "Button", BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_TABSTOP, 140, 34, 54, 20
+    LTEXT "自定义", -1, 12, 68, 42, 10
     EDITTEXT IDC_CUSTOM, 64, 64, 66, 18, ES_NUMBER | ES_AUTOHSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON "Set", IDOK, 140, 64, 54, 20
+    DEFPUSHBUTTON "设置", IDOK, 140, 64, 54, 20
     LTEXT "", IDC_ERROR, 12, 87, 182, 18
-    PUSHBUTTON "Start", IDC_TOGGLE, 12, 110, 54, 20
-    PUSHBUTTON "Reset", IDC_RESET, 76, 110, 54, 20
-    PUSHBUTTON "Quit", IDC_QUIT, 140, 110, 54, 20
-    LTEXT "戌無营造", -1, 12, 148, 182, 12
+    PUSHBUTTON "开始", IDC_TOGGLE, 12, 110, 54, 20
+    PUSHBUTTON "重置", IDC_RESET, 76, 110, 54, 20
+    PUSHBUTTON "退出", IDC_QUIT, 140, 110, 54, 20
+    LTEXT "作者：戌無营造", IDC_AUTHOR, 12, 148, 182, 12
 END
 
 1 VERSIONINFO
-FILEVERSION 1,1,0,0
-PRODUCTVERSION 1,1,0,0
+FILEVERSION 1,1,1,0
+PRODUCTVERSION 1,1,1,0
 FILEOS VOS_NT_WINDOWS32
 FILETYPE VFT_APP
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "080404B0"
         BEGIN
             VALUE "CompanyName", "戌無营造\0"
-            VALUE "FileDescription", "暗淡蓝点 Native Timer\0"
-            VALUE "FileVersion", "1.1.0\0"
+            VALUE "FileDescription", "暗淡蓝点轻量番茄钟\0"
+            VALUE "FileVersion", "1.1.1\0"
             VALUE "ProductName", "暗淡蓝点\0"
-            VALUE "ProductVersion", "1.1.0\0"
+            VALUE "ProductVersion", "1.1.1\0"
             VALUE "OriginalFilename", "DimBlueDot.exe\0"
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x0409, 1200
+        VALUE "Translation", 0x0804, 1200
     END
 END

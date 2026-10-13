@@ -14,3 +14,4 @@
 #define IDC_RESET 207
 #define IDC_QUIT 208
 #define IDC_ERROR 209
+#define IDC_AUTHOR 210

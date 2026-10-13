@@ -31,8 +31,8 @@ jobs:
         run: ./native-win/tests/install-test.ps1
       - uses: actions/upload-artifact@v4
         with:
-          name: DimBlueDot-1.1.0-Win10-x64-native
+          name: DimBlueDot-1.1.1-Win10-x64-native-zh-CN
           path: |
             dist/native-win/DimBlueDot.exe
-            dist/native-win/DimBlueDot-1.1.0-Win10-x64-Setup.exe
+            dist/native-win/DimBlueDot-1.1.1-Win10-x64-Setup.exe
             dist/native-win/build-report.json

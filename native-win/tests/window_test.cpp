@@ -59,6 +59,8 @@ int main() {
     gDisplayedMinute = ~std::uint64_t{0};
     SendMessageW(gWindow, WM_TIMER, kTick, 0);
     wchar_t text[80];
+    GetDlgItemTextW(gSettings, IDC_AUTHOR, text, 80);
+    CHECK(wcscmp(text, L"作者：戌無营造") == 0);
     GetDlgItemTextW(gSettings, IDC_CUSTOM, text, 80);
     CHECK(wcscmp(text, L"35") == 0);
     SendMessageW(gSettings, WM_COMMAND, IDOK, 0);

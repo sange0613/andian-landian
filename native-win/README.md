@@ -3,7 +3,8 @@
 这是使用 C++17、Win32 和 Windows 自带 GDI+ 的轻量版，无需 Electron、.NET 或额外运行库。
 支持 Windows 10 / 11 x64，保留蓝点、剩余分钟数、拖动、双击开始/暂停/继续、托盘、简洁设置、5/25/45 分钟、自定义 1-180 分钟、重置、隐藏/显示、关闭缩到托盘、到点声音与 3 倍放大、三次点击取消，以及设置中的作者“戌無营造”。
 
-详细操作见 [使用说明](使用说明.txt)。菜单使用英文，产品名称和作者保留原名称。
+详细操作见 [使用说明](使用说明.txt)。1.1.1 版的菜单、设置、通知及安装卸载界面均为简体中文。
+设置底部显示“作者：戌無营造”，程序和安装包属性也使用这一署名。
 
 ## 构建
 
@@ -22,7 +23,7 @@ Windows 上安装 Visual Studio C++ 工具、Node.js、NSIS，在 Developer Powe
 ```
 
 输出在 `dist/native-win/`：`DimBlueDot.exe` 是免安装程序，
-`DimBlueDot-1.1.0-Win10-x64-Setup.exe` 是安装包。
+`DimBlueDot-1.1.1-Win10-x64-Setup.exe` 是安装包。
 构建中间文件和测试程序不随安装包分发。
 `build-report.json` 记录准确大小、SHA-256、导入的系统 DLL；
 构建检查会拒绝额外运行库，且限制程序在 5MB 内、安装包在 2MB 内。
@@ -30,7 +31,7 @@ Windows 上安装 Visual Studio C++ 工具、Node.js、NSIS，在 Developer Powe
 本地 MinGW 首轮实测：主程序 91,136 字节，安装包 114,233 字节。
 最终产物的准确数值以构建报告为准。MSVC 产物大小可能不同。
 
-已完成 Windows 验证的交付版：安装包 160,964 字节（约 157KB），
+1.1.0 版的 Windows 验证记录：安装包 160,964 字节（约 157KB），
 程序 198,656 字节（约 194KB），安装目录包含卸载程序共 271,516 字节（约 265KB）。
 对应 Windows 构建与验证：[run 38097249105](https://github.com/sange1022/andian-landian/actions/runs/38097249105)。
 这份验证后的安装包与免安装程序在 `dist/暗淡蓝点-Win10-轻量版/`，

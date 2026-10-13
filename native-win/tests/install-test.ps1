@@ -1,13 +1,14 @@
 $ErrorActionPreference = 'Stop'
 $output = Resolve-Path "$PSScriptRoot/../../dist/native-win"
 $target = Join-Path $env:TEMP 'DimBlueDot-install-test'
-$setup = Join-Path $output 'DimBlueDot-1.1.0-Win10-x64-Setup.exe'
+$setup = Join-Path $output 'DimBlueDot-1.1.1-Win10-x64-Setup.exe'
 $installed = Start-Process $setup -ArgumentList @('/S', "/D=$target") -Wait -PassThru
 if ($installed.ExitCode -ne 0) { throw 'Silent installation failed' }
 foreach ($file in @('DimBlueDot.exe', 'Uninstall.exe', '使用说明.txt')) {
   if (!(Test-Path (Join-Path $target $file))) { throw "Missing installed file: $file" }
 }
 $installedBytes = (Get-ChildItem $target -Recurse -File | Measure-Object Length -Sum).Sum
+if ((Get-Item (Join-Path $target 'DimBlueDot.exe')).VersionInfo.CompanyName -ne '戌無营造') { throw 'Incorrect author credit in installed application' }
 if ($installedBytes -gt 5MB) { throw "Installed directory too big: $installedBytes" }
 Write-Output "Installed directory: $installedBytes bytes"
 

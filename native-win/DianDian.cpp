@@ -48,10 +48,10 @@ std::uint64_t Now() { return GetTickCount64(); }
 
 const wchar_t* StatusText() {
     switch (gTimer.status) {
-        case Status::Running: return L"Running";
-        case Status::Paused: return L"Paused";
-        case Status::Finished: return L"Finished";
-        default: return L"Ready";
+        case Status::Running: return L"计时中";
+        case Status::Paused: return L"已暂停";
+        case Status::Finished: return L"已结束";
+        default: return L"未开始";
     }
 }
 
@@ -158,7 +158,7 @@ void DrawDot(float diameter) {
 
 void UpdateTray() {
     const unsigned minutes = static_cast<unsigned>((gTimer.remaining(Now()) + 59999) / 60000);
-    swprintf(gTray.szTip, ARRAYSIZE(gTray.szTip), L"暗淡蓝点 | %u min | %ls", minutes, StatusText());
+    swprintf(gTray.szTip, ARRAYSIZE(gTray.szTip), L"暗淡蓝点 | %u 分钟 | %ls", minutes, StatusText());
     if (gTrayAdded) Shell_NotifyIconW(NIM_MODIFY, &gTray);
 }
 
@@ -176,9 +176,9 @@ void AddTray() {
 void UpdateSettings(bool syncInput) {
     if (!gSettings) return;
     wchar_t text[80];
-    swprintf(text, 80, L"%u min  ·  %ls", static_cast<unsigned>((gTimer.remaining(Now()) + 59999) / 60000), StatusText());
+    swprintf(text, 80, L"%u 分钟  ·  %ls", static_cast<unsigned>((gTimer.remaining(Now()) + 59999) / 60000), StatusText());
     SetDlgItemTextW(gSettings, IDC_STATUS, text);
-    SetDlgItemTextW(gSettings, IDC_TOGGLE, gTimer.status == Status::Running ? L"Pause" : gTimer.status == Status::Paused ? L"Resume" : L"Start");
+    SetDlgItemTextW(gSettings, IDC_TOGGLE, gTimer.status == Status::Running ? L"暂停" : gTimer.status == Status::Paused ? L"继续" : L"开始");
     EnableWindow(GetDlgItem(gSettings, IDC_TOGGLE), gTimer.status != Status::Finished);
     CheckDlgButton(gSettings, IDC_PRESET5, gTimer.minutes == 5 ? BST_CHECKED : BST_UNCHECKED);
     CheckDlgButton(gSettings, IDC_PRESET25, gTimer.minutes == 25 ? BST_CHECKED : BST_UNCHECKED);
@@ -205,7 +205,7 @@ void OnFinished() {
     if (!gHidden) SetTimer(gWindow, kAnimate, 33, nullptr);
     MessageBeep(MB_ICONEXCLAMATION);
     lstrcpynW(gTray.szInfoTitle, kTitle, ARRAYSIZE(gTray.szInfoTitle));
-    lstrcpynW(gTray.szInfo, L"Time is up.", ARRAYSIZE(gTray.szInfo));
+    lstrcpynW(gTray.szInfo, L"时间到了，休息一下。", ARRAYSIZE(gTray.szInfo));
     gTray.dwInfoFlags = NIIF_INFO | NIIF_NOSOUND;
     gTray.uFlags |= NIF_INFO;
     Shell_NotifyIconW(NIM_MODIFY, &gTray);
@@ -272,18 +272,18 @@ void Command(UINT command) {
 
 void ShowMenu() {
     HMENU menu = CreatePopupMenu();
-    AppendMenuW(menu, MF_STRING, IDM_HIDE, gHidden ? L"Show blue dot" : L"Hide blue dot");
-    AppendMenuW(menu, MF_STRING, IDM_SETTINGS, L"Settings...");
+    AppendMenuW(menu, MF_STRING, IDM_HIDE, gHidden ? L"显示蓝点" : L"隐藏蓝点");
+    AppendMenuW(menu, MF_STRING, IDM_SETTINGS, L"设置");
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
-    AppendMenuW(menu, MF_STRING | (gTimer.minutes == 5 ? MF_CHECKED : 0), IDC_PRESET5, L"5 minutes");
-    AppendMenuW(menu, MF_STRING | (gTimer.minutes == 25 ? MF_CHECKED : 0), IDC_PRESET25, L"25 minutes");
-    AppendMenuW(menu, MF_STRING | (gTimer.minutes == 45 ? MF_CHECKED : 0), IDC_PRESET45, L"45 minutes");
+    AppendMenuW(menu, MF_STRING | (gTimer.minutes == 5 ? MF_CHECKED : 0), IDC_PRESET5, L"5 分钟");
+    AppendMenuW(menu, MF_STRING | (gTimer.minutes == 25 ? MF_CHECKED : 0), IDC_PRESET25, L"25 分钟");
+    AppendMenuW(menu, MF_STRING | (gTimer.minutes == 45 ? MF_CHECKED : 0), IDC_PRESET45, L"45 分钟");
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
     AppendMenuW(menu, MF_STRING | (gTimer.status == Status::Finished ? MF_GRAYED : 0), IDC_TOGGLE,
-                gTimer.status == Status::Running ? L"Pause" : gTimer.status == Status::Paused ? L"Resume" : L"Start");
-    AppendMenuW(menu, MF_STRING, IDC_RESET, L"Reset");
+                gTimer.status == Status::Running ? L"暂停" : gTimer.status == Status::Paused ? L"继续" : L"开始");
+    AppendMenuW(menu, MF_STRING, IDC_RESET, L"重置");
     AppendMenuW(menu, MF_SEPARATOR, 0, nullptr);
-    AppendMenuW(menu, MF_STRING, IDM_EXIT, L"Quit");
+    AppendMenuW(menu, MF_STRING, IDM_EXIT, L"退出");
     POINT point{};
     GetCursorPos(&point);
     SetForegroundWindow(gWindow);
@@ -316,7 +316,7 @@ INT_PTR CALLBACK SettingsProc(HWND dialog, UINT message, WPARAM wParam, LPARAM) 
                     GetDlgItemTextW(dialog, IDC_CUSTOM, text, ARRAYSIZE(text));
                     int minutes = 0;
                     if (!dimblue::parseMinutes(text, minutes)) {
-                        SetDlgItemTextW(dialog, IDC_ERROR, L"Enter a whole number from 1 to 180.");
+                        SetDlgItemTextW(dialog, IDC_ERROR, L"请输入 1～180 之间的整数分钟。");
                         SetFocus(GetDlgItem(dialog, IDC_CUSTOM));
                         return TRUE;
                     }

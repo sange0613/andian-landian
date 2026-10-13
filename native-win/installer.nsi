@@ -84,7 +84,8 @@ Section "安装"
   WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\DimBlueDotNative" "EstimatedSize" $1
 SectionEnd
 
-Section "卸载"
+; NSIS reserves this name to identify the uninstaller section.
+Section "Uninstall"
   SetShellVarContext current
   !insertmacro CloseNativeApp
   Delete "$DESKTOP\暗淡蓝点 (轻量版).lnk"

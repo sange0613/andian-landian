@@ -3,7 +3,9 @@ name: Build native Windows app
 on:
   workflow_dispatch:
   push:
-    branches: [codex/native-windows-small]
+    branches: [main, codex/native-windows-small]
+    paths: ['native-win/**', '.github/workflows/build-native-win.yml']
+  pull_request:
     paths: ['native-win/**', '.github/workflows/build-native-win.yml']
 
 permissions:

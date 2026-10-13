@@ -9,8 +9,8 @@ Mac 和 Windows 均为原生轻量版，不捆绑 Electron、浏览器内核、�
 
 | 平台 | 版本 | 下载文件 | 安装包大小 | 安装后大小 |
 | --- | --- | --- | --- | --- |
-| macOS 12+，M 系列 / Intel | 1.2.6 | `暗淡蓝点-1.2.6-Mac-安装包.pkg` | 约 82KiB | 约 300KiB |
-| macOS，拖拽安装 | 1.2.6 | `暗淡蓝点-1.2.6-Mac-通用轻量版.dmg` | 约 111KiB | 同上 |
+| macOS 12+，M 系列 / Intel | 1.2.6 | `DimBlueDot-1.2.6-Mac-Universal.pkg` | 约 81KiB | 约 300KiB |
+| macOS，拖拽安装 | 1.2.6 | `DimBlueDot-1.2.6-Mac-Universal.dmg` | 约 111KiB | 同上 |
 | Windows 10 / 11，64 位 | 1.1.1 | `DimBlueDot-1.1.1-Win10-x64-Setup.exe` | 约 157KiB | 约 265KiB |
 | Windows，免安装 | 1.1.1 | `DimBlueDot-1.1.1-Win10-x64-Portable.exe` | 约 194KiB | 无需安装 |
 

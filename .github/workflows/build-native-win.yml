@@ -1,0 +1,40 @@
+name: Build native Windows app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, codex/native-windows-small]
+    paths: ['native-win/**', '.github/workflows/build-native-win.yml']
+  pull_request:
+    paths: ['native-win/**', '.github/workflows/build-native-win.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Install NSIS
+        shell: pwsh
+        run: choco install nsis --no-progress -y
+      - name: Build
+        shell: pwsh
+        run: ./native-win/build.ps1
+      - name: Test installation and installed app
+        shell: pwsh
+        run: ./native-win/tests/install-test.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DimBlueDot-1.1.1-Win10-x64-native-zh-CN
+          path: |
+            dist/native-win/DimBlueDot.exe
+            dist/native-win/DimBlueDot-1.1.1-Win10-x64-Setup.exe
+            dist/native-win/build-report.json

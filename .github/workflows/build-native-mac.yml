@@ -1,0 +1,38 @@
+name: Build native Mac app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, codex/native-windows-small]
+    paths: ['native-mac/**', 'native-win/NativeLogic.h', 'native-win/tests/logic_test.cpp', 'build/icon.icns', '.github/workflows/build-native-mac.yml']
+  pull_request:
+    paths: ['native-mac/**', 'native-win/NativeLogic.h', 'native-win/tests/logic_test.cpp', 'build/icon.icns', '.github/workflows/build-native-mac.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Build universal app, test native UI, and validate installers
+        run: bash native-mac/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DimBlueDot-Mac-native-zh-CN
+          path: |
+            dist/暗淡蓝点-Mac-轻量版-*/*.pkg
+            dist/暗淡蓝点-Mac-轻量版-*/*.dmg
+            dist/暗淡蓝点-Mac-轻量版-*/build-report.json
+      - name: Preserve UI diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mac-native-test-diagnostics
+          path: dist/mac-native-build/verification-*/
+          if-no-files-found: ignore

@@ -1,63 +1,63 @@
 # 暗淡蓝点
 
-暗淡蓝点是一个极简桌面番茄钟，当前发布版支持 macOS Apple Silicon。
+极简桌面番茄钟。中文界面，作者：**戌無营造**。
+Mac 和 Windows 均为原生轻量版，不捆绑 Electron、浏览器内核、字体或第三方运行库。
 
 ## 下载
 
-前往 Releases 下载最新版：
+[最新版安装包和使用说明](https://github.com/sange1022/andian-landian/releases/tag/v1.2.6)
 
-https://github.com/sange1022/andian-landian/releases
+| 平台 | 版本 | 下载文件 | 安装包大小 | 安装后大小 |
+| --- | --- | --- | --- | --- |
+| macOS 12+，M 系列 / Intel | 1.2.6 | `暗淡蓝点-1.2.6-Mac-安装包.pkg` | 约 82KiB | 约 300KiB |
+| macOS，拖拽安装 | 1.2.6 | `暗淡蓝点-1.2.6-Mac-通用轻量版.dmg` | 约 111KiB | 同上 |
+| Windows 10 / 11，64 位 | 1.1.1 | `DimBlueDot-1.1.1-Win10-x64-Setup.exe` | 约 157KiB | 约 265KiB |
+| Windows，免安装 | 1.1.1 | `DimBlueDot-1.1.1-Win10-x64-Portable.exe` | 约 194KiB | 无需安装 |
 
-当前 macOS 安装包：`andian-landian-1.0.11-arm64.dmg`
+两个平台使用独立版本号。准确大小和 SHA-256 校验值见发布页；文件系统分配空间可能略大。
 
 ## 安装
 
-1. 下载 `.dmg` 文件。
-2. 打开 `.dmg`，把 `暗淡蓝点.app` 拖到 `Applications`。
-3. 如果 macOS 提示无法验证开发者，右键点击 App 选择“打开”，或到系统设置的安全性里允许打开。
+- Mac：双击 `.pkg`，按提示安装到“应用程序”；之后在启动台搜索“暗淡蓝点”打开。
+- Mac DMG：打开 `.dmg`，将应用拖入 `Applications`；不要一直从磁盘映像或源码目录运行。
+- Windows：运行 `Setup.exe` 安装，或直接运行 `Portable.exe`。
+- 更新后请退出旧进程，再打开新版。只替换文件不会让正在运行的旧进程自动更新。
+- 轻量版与旧 Electron 版独立安装，确认轻量版可用后再卸载旧版。
 
-## 使用说明
+应用和安装包未做商业开发者签名或 Apple 公证。Mac 网络下载首次打开若被拦截，
+可在系统设置“隐私与安全性”中允许；Windows 也可能显示未知发布者提示。
+不要关闭系统安全检查，只运行本仓库发布的文件。
 
-- 启动后，状态栏会显示蓝点和剩余分钟数。
-- 桌面上会出现一个克莱因蓝圆点。
-- 左键按住桌面圆点可以拖动位置。
-- 双击桌面圆点可以开始或暂停。
-- 状态栏左键双击也可以开始或暂停。
-- 状态栏右键打开菜单。
-- 桌面圆点右键打开菜单。
-- 右键菜单可隐藏桌面蓝点；隐藏后倒计时继续，可从状态栏右键恢复。
-- 设置里有 `5 / 25 / 45` 分钟快捷按钮。
-- 设置里也可以输入自定义时间，范围是 `1-180` 分钟。
-- 开始计时后，蓝点会变成半透明。
-- 时间到后，状态栏会闪烁，系统会响一声，桌面圆点会放大提醒。
-- 时间到后，需要连续点击圆点 3 下才会取消提醒。
+## 使用
 
-## 注意
+- 左键拖动桌面蓝点，双击开始、暂停或继续。
+- 设置提供 5、25、45 分钟，自定义支持 1 到 180 的整数分钟，点击“设置”或按回车确认。
+- 计时中蓝点半透明，暂停后恢复不透明；重新设定时长会重置当前计时。
+- 时间到响一声，圆点反复放大到三倍，连续点击三下取消提醒。
+- 关闭设置不会退出，隐藏蓝点后计时继续；完全退出请使用“退出”。
 
-- 当前 release 是 `arm64`，适合 M 系列 Mac。
-- 当前版本未做 Apple Developer ID 签名，所以第一次打开可能需要手动允许。
-- Windows 版本源码配置仍保留，但当前 GitHub release 只上传了 macOS 安装包。
+## Mac 状态栏
 
-## Development
+- 左键单击立即显示完整的紧凑菜单，没有“暂停”项，也不等待双击判定。
+- 左键双击直接开始、暂停或继续；菜单会收起，不会阻挡第二下点击。
+- 未开始或暂停时圆点为 10pt、不透明；计时中保持 8pt 并变淡，旁边显示剩余分钟。
+- 隐藏蓝点后，普通状态栏点击不会显示桌面圆点；通过菜单“显示蓝点”手动恢复。
+- 时间到仍会自动显示圆点动画，取消提醒后恢复原来的隐藏状态。
+- 菜单中的“取消提醒”也能结束提醒；点击菜单外部可收起菜单。
 
-```bash
-npm install
-npm test
-npm start
-```
+## Windows 托盘
 
-If Electron download is slow in China, install with:
+- 右键蓝点或托盘打开菜单；单击托盘可恢复隐藏蓝点，显示时可开始或暂停。
+- 关闭主窗口只隐藏到托盘，倒计时继续；托盘图标可能收在任务栏右侧的向上箭头中。
+- 卸载：Windows 设置中的“应用”，选择“暗淡蓝点 (轻量版)”。
 
-```bash
-ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/ npm install
-```
+## 构建与验证
 
-## Build Installers
+- [Mac 原生版构建和详细说明](native-mac/README.md)：Objective-C++、AppKit，通用 arm64/x86_64 应用。
+- [Windows 原生版构建和详细说明](native-win/README.md)：C++17、Win32、系统 GDI+。
+- 原生计时和鼠标核心共用 `native-win/NativeLogic.h`，两个平台均有真实窗口交互测试。
+- Mac 已在 Apple Silicon 运行验证；包含 Intel 架构，未在实体 Intel Mac 上测试。
+- Windows 安装、启动、托盘关闭行为和卸载已在 GitHub Windows runner 验证；尚未在 Windows 10 真机测试。
 
-```bash
-npm run make:icon
-npm run dist:win
-npm run dist:mac
-```
-
-The installers are written to `dist/`.
+旧 Electron 源码保留在 `src/`，可通过 `npm ci`、`npm test`、`npm start` 开发；
+`npm run dist:mac` 和 `npm run dist:win` 只构建旧版，不是上面的原生轻量版。

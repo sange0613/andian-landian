@@ -1,6 +1,6 @@
 {
   "name": "minimal-win10-pomodoro",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "A tiny floating desktop pomodoro timer named 暗淡蓝点.",
   "author": "戌無营造",
   "main": "src/main.js",

@@ -9,7 +9,7 @@
 中文版 1.1.1 的 Windows 验证产物在 `dist/暗淡蓝点-Win10-中文轻量版-1.1.1/`。
 安装包 161,068 字节（约 157KB），安装目录共 271,500 字节（约 265KB）。
 中文作者控件、程序属性署名、计时交互、安装、启动和卸载检查均通过。
-[Windows 验证记录](https://github.com/sange1022/andian-landian/actions/runs/38335176786)。
+[Windows 验证记录](https://github.com/sange0613/andian-landian/actions/runs/38335176786)。
 
 ## 构建
 
@@ -38,7 +38,7 @@ Windows 上安装 Visual Studio C++ 工具、Node.js、NSIS，在 Developer Powe
 
 1.1.0 版的 Windows 验证记录：安装包 160,964 字节（约 157KB），
 程序 198,656 字节（约 194KB），安装目录包含卸载程序共 271,516 字节（约 265KB）。
-对应 Windows 构建与验证：[run 38097249105](https://github.com/sange1022/andian-landian/actions/runs/38097249105)。
+对应 Windows 构建与验证：[run 38097249105](https://github.com/sange0613/andian-landian/actions/runs/38097249105)。
 这份验证后的安装包与免安装程序在 `dist/暗淡蓝点-Win10-轻量版/`，
 附有 `build-report.json` 大小及校验报告。验证平台是 Windows NT 10.0.26100.0，
 尚未在 Windows 10 真机验证。

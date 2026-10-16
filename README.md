@@ -5,7 +5,7 @@ Mac 和 Windows 均为原生轻量版，不捆绑 Electron、浏览器内核、�
 
 ## 下载
 
-[最新版安装包和使用说明](https://github.com/sange1022/andian-landian/releases/tag/v1.2.6)
+[最新版安装包和使用说明](https://github.com/sange0613/andian-landian/releases/tag/v1.2.6)
 
 | 平台 | 版本 | 下载文件 | 安装包大小 | 安装后大小 |
 | --- | --- | --- | --- | --- |
